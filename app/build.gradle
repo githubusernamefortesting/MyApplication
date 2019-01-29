@@ -1,6 +1,19 @@
 apply plugin: 'com.android.application'
 
+def keyStorePropertiesFile = file("keystore.properties")
+def keyStoreProperties = new Properties()
+keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
+
 android {
+    signingConfigs {
+        config {
+            keyAlias keyStoreProperties['keyAlias']
+            keyPassword keyStoreProperties['keyPassword']
+            storeFile rootProject.file(keyStoreProperties['storeFile'])
+            storePassword keyStoreProperties['storePassword']
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "githubusernamefortesting.com.myapplication"
@@ -14,12 +27,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
