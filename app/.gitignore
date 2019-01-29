@@ -7,7 +7,7 @@
 *.dex
 
 # keystore
-/keystore.properties
+#/keystore.properties
 
 # Java class files
 *.class
